@@ -1,0 +1,273 @@
+.user-panel {
+  float: right;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.user-panel a {
+  color: #fff;
+}
+
+.user-panel a:hover {
+  color: #b01ba5;
+}
+
+.main-menu {
+  list-style: none;
+  text-align: center;
+}
+
+.main-menu li {
+  display: inline-block;
+  position: relative;
+}
+
+.main-menu li a {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  margin-right: 40px;
+  padding-bottom: 28px;
+  position: relative;
+  padding-right: 20px;
+}
+
+.main-menu li a:after {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  right: 0;
+  top: 1px;
+  background-image: url("/nextjs-blog/public/images/profile.jpg");
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.main-menu li a i {
+  color: #928d92;
+  margin-left: 5px;
+}
+
+.main-menu li a:hover {
+  color: #b01ba5;
+}
+
+.main-menu li a:hover i {
+  color: #b01ba5;
+}
+
+.main-menu li:hover .sub-menu {
+  visibility: visible;
+  opacity: 1;
+  margin-top: 0;
+}
+
+.main-menu li:hover > a {
+  color: #b01ba5;
+}
+
+.main-menu li .sub-menu {
+  position: absolute;
+  list-style: none;
+  text-align: left;
+  width: 220px;
+  left: 0;
+  top: 100%;
+  padding: 20px 0;
+  visibility: hidden;
+  opacity: 0;
+  margin-top: 50px;
+  background: #fff;
+  z-index: 99;
+  transition: all 0.4s;
+  box-shadow: 2px 7px 20px rgba(0, 0, 0, 0.4);
+}
+
+.main-menu li .sub-menu li {
+  display: block;
+}
+
+.main-menu li .sub-menu li a {
+  display: block;
+  color: #000;
+  margin-right: 0;
+  padding: 8px 30px;
+}
+
+.main-menu li .sub-menu li a:after {
+  display: none;
+}
+
+.main-menu li .sub-menu li a:hover {
+  color: #b01ba5;
+}
+
+.header {
+  background-color: #212121;
+  padding: 20px 0;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo a {
+  display: inline-block;
+}
+
+.navLinks ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navLinks ul li {
+  margin-left: 10px;
+  margin-right: 110px;
+}
+
+.navLinks ul li:first-child {
+  margin-left: 0;
+}
+
+.navLinks ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px;
+  transition: color 0.3s ease;
+}
+
+.navLinks ul li a:hover {
+  color: #007bff;
+}
+
+.userActions {
+  display: flex;
+  align-items: center;
+}
+
+.userButton,
+.loginButton,
+.signupButton {
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 12px 24px;
+  transition: background-color 0.3s ease;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.userButton:hover,
+.loginButton:hover,
+.signupButton:hover {
+  background-color: #0056b3;
+}
+
+.signupButton {
+  background-color: #19a116;
+  border-radius: 25px;
+}
+
+.loginButton {
+  background-color: #4c4f4c;
+  border-radius: 25px;
+}
+
+.balanceButton {
+  background-color: #19a116;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 18px 24px;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.balanceButton::before {
+  content: '+';
+  color: #2bff00;
+  margin-right: 5px;
+  margin-left: -5px;
+}
+
+.balanceButton:hover {
+  background-color: #04ff00;
+}
+
+.userDropdown {
+  position: relative;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #e4dada;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
+  z-index: 1;
+}
+
+.dropdownContent a,
+.dropdownContent button {
+  display: block;
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.dropdownContent a:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdownContent .balanceButton {
+  background-color: #19a116;
+  color: #fff;
+}
+
+.dropdownContent .balanceButton:hover {
+  background-color: #04ff00;
+}
+
+.dropdownContent .logoutButton {
+  background-color: #706c6c;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 6px 24px;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.dropdownContent .logoutButton:hover {
+  background-color: #ff0000;
+}

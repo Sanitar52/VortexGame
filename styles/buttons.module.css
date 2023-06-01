@@ -1,0 +1,30 @@
+/* Button.module.css */
+
+.verifyButton {
+    background-color: #4285f4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .verifyButton:hover {
+    background-color: #3a7bd5;
+  }
+  
+  .resendButton {
+    background-color: #fbbc05;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .resendButton:hover {
+    background-color: #f8a700;
+  }

@@ -1,0 +1,113 @@
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/images/rise.png');
+  background-size: cover;
+}
+
+.formContainer {
+  max-width: 375px; /* Increase the max-width value to make the container wider */
+  width: 100%;
+  padding: 20px;
+}
+
+.backgroundLines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  background-color: #ffffff;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.card {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+}
+
+.cardHeader {
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.cardBody {
+  padding: 20px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formLabel {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 5px;
+}
+
+.formControl {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.formControl:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.btnPrimary {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btnPrimary:hover {
+  background-color: #0056b3;
+}
+
+.errorMessage {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.loginMessage {
+  color: #008000;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.jwtToken {
+  font-size: 14px;
+  margin-top: 10px;
+}
