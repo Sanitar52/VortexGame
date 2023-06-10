@@ -47,8 +47,12 @@ const LoginPage: React.FC = () => {
   const handleLogin = async () => {
     
     try {
+      const base_url = process.env.BACKEND_BASE_URL;
+      const api = '/api/Auth/Login';
+      console.log('BASE URL', base_url);
+      const webUrl = base_url + api;
       const response = await axios.post(
-        'https://vortex-game-production.up.railway.app/api/Auth/Login',
+        webUrl,
         loginForm
       );
       if (response.data.accessToken) {
@@ -83,10 +87,12 @@ const LoginPage: React.FC = () => {
             headers,
             body: JSON.stringify(requestBody),
           };
-          const response = await fetch('https://vortex-game-production.up.railway.app/graphql/', options);
+          
+          const response = await fetch(process.env.GRAPHQL_BASE_URL, options);
           const data = await response.json();
           console.log('RESPONSE FROM FETCH REQUEST', data?.data);
           setUser(data?.data?.me ?? null);
+          router.push('/');
         } catch (err) {
           console.log('ERROR DURING FETCH REQUEST', err);
         }

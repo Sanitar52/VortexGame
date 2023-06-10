@@ -3,8 +3,9 @@ import axios from 'axios';
 import styles from '../../styles/styles.module.css';
 import stylesButton from '../../styles/buttons.module.css';
 import Layout from '../layout';
-import Router from 'next/router';
+import {useRouter} from 'next/router';
 import { type } from 'os';
+
 interface RegisterForm {
   email: string;
   password: string;
@@ -35,7 +36,7 @@ interface ErrorResponse400v2{
   additionalProp3: string;
 
 }
-
+const base_url = process.env.BACKEND_BASE_URL;
 const RegisterPage: React.FC = () => {
   const [registerForm, setRegisterForm] = useState<RegisterForm>({
     email: '',
@@ -51,8 +52,9 @@ const RegisterPage: React.FC = () => {
   const [resendCount, setResendCount] = useState<number>(0);
   const [resendDisabled, setResendDisabled] = useState<boolean>(false);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
-  
+  const router = useRouter()
   useEffect(() => {
+    
     if (resendCount === 3) {
       setResendDisabled(true);
     } else {
@@ -74,8 +76,9 @@ const RegisterPage: React.FC = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const api = '/api/Auth/Register';
       const response = await axios.post(
-        'https://vortex-game-production.up.railway.app/api/Auth/Register',
+        base_url + api,
         registerForm
       );
   
@@ -114,13 +117,14 @@ const RegisterPage: React.FC = () => {
   const handleVerificationSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const api = '/api/Auth/VerifyEmail';
       const verificationData = {
         emailOrUsername: registerForm.email,
         emailCode: verificationCode,
       };
 
       const response = await axios.post(
-        'https://vortex-game-production.up.railway.app/api/Auth/VerifyEmail',
+        base_url + api,
         verificationData
       );
 
@@ -128,9 +132,9 @@ const RegisterPage: React.FC = () => {
         console.log('Email verification successful!');
         // Reset the form after successful verification
         setVerificationCode('');
-        Router.push('/');
         setShowVerification(false);
         setVerificationSuccess(true);
+        router.push('/login');
       } else {
         try {
           const errorMessage = response.data.message;
@@ -154,12 +158,13 @@ const RegisterPage: React.FC = () => {
 
   const handleResendVerification = async () => {
     try {
+      const api = '/api/Auth/ResendVerificationMail';
       const resendData = {
         emailOrUsername: registerForm.email,
       };
 
       const response = await axios.post(
-        'https://vortex-game-production.up.railway.app/api/Auth/ResendVerificationMail',
+        base_url + api,
         resendData
       );
 

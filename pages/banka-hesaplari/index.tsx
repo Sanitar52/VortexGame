@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../../styles/payment.module.css';
-import Layout from '../layout';
+import axios from 'axios';
+import { useGlobalContext } from '../../contexts';
 
 const PaymentPage = () => {
   const [showCardOptions, setShowCardOptions] = useState(false);
@@ -8,7 +9,12 @@ const PaymentPage = () => {
   const [showPaparaOptions, setShowPaparaOptions] = useState(false);
   const [showGiftCodeOptions, setShowGiftCodeOptions] = useState(false);
   const [showOtherOptions, setShowOtherOptions] = useState(false);
-
+  const [amount, setAmount] = useState(0);
+  const {accessToken} = useGlobalContext();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setAmount(parseInt(value));
+  };
   const handleCardClick = () => {
     setShowCardOptions(!showCardOptions);
   };
@@ -16,6 +22,23 @@ const PaymentPage = () => {
   const handleBankClick = () => {
     setShowBankOptions(!showBankOptions);
   };
+  const handleDepositClick = async () => {
+    try{
+      const url = process.env.BACKEND_BASE_URL
+      const api = '/api/Transaction/Deposit'
+      const options = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.post(url + api, {paymentAmount:amount}, options);
+      var x = response.data;
+      console.log(x);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   const handlePaparaClick = () => {
     setShowPaparaOptions(!showPaparaOptions);
@@ -51,7 +74,8 @@ const PaymentPage = () => {
         {showBankOptions && (
           <div className={styles.entryBox}>
             <img src="example.png" alt="Example" />
-            {/* Add entry boxes for bank options */}
+            <input type="text" placeholder="Miktar TL" onChange={handleInputChange} />
+            <button className={styles.button} onClick={handleDepositClick}> Ödeme Bildir </button>
           </div>
         )}
       </div>

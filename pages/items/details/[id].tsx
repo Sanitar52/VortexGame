@@ -19,9 +19,11 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => {   
       try {
-        const webUrl = `https://vortex-game-production.up.railway.app/api/Item/AllItemData?id=${router.query.id}`;
+        const base_url = process.env.BACKEND_BASE_URL;
+        const api = '/api/Item/AllItemData?id=';
+        const webUrl = base_url + api + router.query.id;
         const response = await axios.get(webUrl);
         if (response.status === 200) {
           const { id, title, price, imageUrl, description, quantity } = response.data;

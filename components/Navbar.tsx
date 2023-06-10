@@ -15,7 +15,6 @@ const Navbar = () => {
   const { user, setUser, accessToken, setAccessToken } = useGlobalContext();
   const [showOptions, setShowOptions] = useState(false);
 
-  console.log(user)
   const handleLogout = () => {
     // Perform logout actions here
     setAccessToken(null);
