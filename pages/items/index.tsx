@@ -30,7 +30,7 @@ const PaymentPage = () => {
   };
 
   return (
-    <Layout><div>
+
     <div className={styles.container}>
       <h1>Ödeme Yöntemleri</h1>
       <div>
@@ -89,8 +89,7 @@ const PaymentPage = () => {
         )}
       </div>
     </div>
-    </div>
-    </Layout>
+
   );
 };
 

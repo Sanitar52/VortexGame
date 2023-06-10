@@ -30,7 +30,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <Layout>
+
       <div className={styles.container}>
         <h1 className={styles.heading}>About Us</h1>
 
@@ -46,7 +46,6 @@ const AboutUs = () => {
           </div>
         ))}
       </div>
-    </Layout>
   );
 };
 

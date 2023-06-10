@@ -85,7 +85,7 @@ const ItemPage = () => {
   }, []);
 
   return (
-    <Layout>
+
       <div style={{ textAlign: 'center' }}>
         <h1>Rise Online Parası Satın Al</h1>
         <div
@@ -117,7 +117,6 @@ const ItemPage = () => {
         </div>
         <button onClick={handleBuyClick}>Satın Al</button>
       </div>
-    </Layout>
   );
 };
 

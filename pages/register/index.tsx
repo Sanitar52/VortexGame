@@ -181,8 +181,6 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <Layout>
-        <div>
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <div className={styles.card}>
@@ -316,8 +314,7 @@ const RegisterPage: React.FC = () => {
         </div>
       </div>
     </div>
-    </div>
-    </Layout>
+
   );
 };
 

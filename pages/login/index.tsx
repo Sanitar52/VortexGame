@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import styles from '../../styles/styles.module.css';
-import Layout from '../layout';
+import { useGlobalContext } from '../../contexts';
+import { set } from 'date-fns';
 interface ErrorResponse400v1 {
   type: string;
   title: string;
@@ -25,6 +26,7 @@ interface ErrorResponse400v2{
 
 }
 const LoginPage: React.FC = () => {
+  const { user, setUser, setAccessToken } = useGlobalContext();
   const [loginForm, setLoginForm] = useState({
     emailOrUsername: '',
     password: '',
@@ -43,6 +45,7 @@ const LoginPage: React.FC = () => {
   };
 
   const handleLogin = async () => {
+    
     try {
       const response = await axios.post(
         'https://vortex-game-production.up.railway.app/api/Auth/Login',
@@ -56,8 +59,37 @@ const LoginPage: React.FC = () => {
         });
         setError('');
         setLoginMessage('Login successful!');
-        setJwtToken(accessToken);
-        localStorage.setItem('accessToken', accessToken);
+        setAccessToken(accessToken);
+        try {
+          const headers = {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          };
+          const requestBody = {
+            query: `
+              query {
+                me {
+                  id
+                  name
+                  surname
+                  username
+                  balance
+                }
+              }
+            `,
+          };
+          const options = {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(requestBody),
+          };
+          const response = await fetch('https://vortex-game-production.up.railway.app/graphql/', options);
+          const data = await response.json();
+          console.log('RESPONSE FROM FETCH REQUEST', data?.data);
+          setUser(data?.data?.me ?? null);
+        } catch (err) {
+          console.log('ERROR DURING FETCH REQUEST', err);
+        }
         
         
       } 
@@ -89,8 +121,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-<Layout>
-    <div>
+
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <div className={styles.card}>
@@ -130,13 +161,10 @@ const LoginPage: React.FC = () => {
             </div>
             {error && <p className={styles.errorMessage}>{error}</p>}
             {loginMessage && <p className={styles.loginMessage}>{loginMessage}</p>}
-            {accessToken && <p className={styles.jwtToken}>JWT Token: {accessToken}</p>}
           </div>
         </div>
       </div>
     </div>
-    </div>
-</Layout>
   );
 };
 

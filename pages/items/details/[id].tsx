@@ -45,25 +45,21 @@ export default function Page() {
 
   if (loading && itemData === null) {
     return (
-      <Layout>
-        <div>
+
           <p>Loading...</p>
-        </div>
-      </Layout>
+
     );
   }
   if (itemData === null) {
     return (
-        <Layout>
-            <div>
+
                 <p>Item not found.</p>
-            </div>
-        </Layout>
+
     )
     };
 
   return (
-    <Layout>
+
       <div>
         <Image alt={itemData.title} src = {itemData.imageUrl} width={200} height={200}></Image>
         <p>Post: {router.query.id}</p>
@@ -73,6 +69,6 @@ export default function Page() {
         <p>Description: {itemData.description}</p>
         {/* ... */}
       </div>
-    </Layout>
+
   );
 }
