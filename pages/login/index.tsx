@@ -3,7 +3,27 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import styles from '../../styles/styles.module.css';
 import Layout from '../layout';
+interface ErrorResponse400v1 {
+  type: string;
+  title: string;
+  status: number;
+  traceId: string;
+  errors: Record<string, string[]>
+    
+};
 
+
+interface ErrorResponse400v2{
+  type: string;
+  title: string;
+  status: number;
+  detail: string;
+  instance: string;
+  additionalProp1: string;
+  additionalProp2: string;
+  additionalProp3: string;
+
+}
 const LoginPage: React.FC = () => {
   const [loginForm, setLoginForm] = useState({
     emailOrUsername: '',
@@ -40,16 +60,30 @@ const LoginPage: React.FC = () => {
         localStorage.setItem('accessToken', accessToken);
         
         
-      } else {
-        const errorMessage = response.data.errors[0].errorMessage;
-        setError(errorMessage);
-      }
+      } 
     } catch (error) {
-      if (error.response && error.response.data.errors) {
-        const errorMessage = error.response.data.errors[0].errorMessage;
-        setError(errorMessage);
+      if (error.response && error.response.status === 400) {
+        try {
+          const errorResponse = error.response.data;
+          if (errorResponse.errors && errorResponse.errors.emailOrUsername) {
+            const errorMessage = errorResponse.errors.emailOrUsername[0];
+            setError(errorMessage);
+          }
+          else if(errorResponse.errors && errorResponse.errors.password) {
+            const errorMessage = errorResponse.errors.password[0];
+            setError(errorMessage);
+          }
+
+        } catch (error) {
+          console.error('Error handling 400 response:', error);
+        }
       } else {
-        console.error('Error submitting form:', error);
+        try {
+          const errorMessage = error.response.data.message;
+          setError(errorMessage);
+        } catch (error) {
+          console.error('Error handling response:', error);
+        }
       }
     }
   };

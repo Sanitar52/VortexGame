@@ -3,6 +3,8 @@ import axios from 'axios';
 import styles from '../../styles/styles.module.css';
 import stylesButton from '../../styles/buttons.module.css';
 import Layout from '../layout';
+import Router from 'next/router';
+import { type } from 'os';
 interface RegisterForm {
   email: string;
   password: string;
@@ -12,20 +14,26 @@ interface RegisterForm {
   phone: string;
 }
 
-interface ErrorResponse {
-  isValid: boolean;
-  errors: Array<{
-    propertyName: string;
-    errorMessage: string;
-    attemptedValue: string;
-    customState: string;
-    severity: number;
-    errorCode: string;
-    formattedMessagePlaceholderValues: {
-      [key: string]: string;
-    };
-  }>;
-  ruleSetsExecuted: string[];
+interface ErrorResponse400v1 {
+  type: string;
+  title: string;
+  status: number;
+  traceId: string;
+  errors: Record<string, string[]>
+    
+};
+
+
+interface ErrorResponse400v2{
+  type: string;
+  title: string;
+  status: number;
+  detail: string;
+  instance: string;
+  additionalProp1: string;
+  additionalProp2: string;
+  additionalProp3: string;
+
 }
 
 const RegisterPage: React.FC = () => {
@@ -42,7 +50,8 @@ const RegisterPage: React.FC = () => {
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [resendCount, setResendCount] = useState<number>(0);
   const [resendDisabled, setResendDisabled] = useState<boolean>(false);
-
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
+  
   useEffect(() => {
     if (resendCount === 3) {
       setResendDisabled(true);
@@ -69,21 +78,35 @@ const RegisterPage: React.FC = () => {
         'https://vortex-game-production.up.railway.app/api/Auth/Register',
         registerForm
       );
+  
       if (response.status === 200) {
         console.log('Registration successful!');
-
         setError('');
         setShowVerification(true);
-      } else {
-        const errorMessage = response.data.errors[0].errorMessage;
-        setError(errorMessage);
       }
     } catch (error) {
-      if (error.response && error.response.data.errors) {
-        const errorMessage = error.response.data.errors[0].errorMessage;
-        setError(errorMessage);
+      if (error.response && error.response.status === 400) {
+        try {
+          const errorResponse = error.response.data;
+          if ('errors' in errorResponse) {
+            // Handle ErrorResponse400v1
+            const errorMessage = Object.values(errorResponse.errors)[0][0];
+            setError(errorMessage);
+          } else if ('detail' in errorResponse) {
+            // Handle ErrorResponse400v2
+            const errorMessage = errorResponse.detail;
+            setError(errorMessage);
+          }
+        } catch (error) {
+          console.error('Error handling 400 response:', error);
+        }
       } else {
-        console.error('Error submitting form:', error);
+        try {
+        const errorMessage = error.response.data.message;
+        setError(errorMessage);
+      } catch (error) {
+        console.error('Error handling response:', error);
+      }
       }
     }
   };
@@ -105,17 +128,26 @@ const RegisterPage: React.FC = () => {
         console.log('Email verification successful!');
         // Reset the form after successful verification
         setVerificationCode('');
+        Router.push('/');
         setShowVerification(false);
+        setVerificationSuccess(true);
       } else {
+        try {
+          const errorMessage = response.data.message;
+          setError(errorMessage);
+        }
+        catch (error) {
+          console.error('Onay kodu hatalı.');
+        }
         const errorMessage = response.data.errors[0].errorMessage;
         setError(errorMessage);
       }
     } catch (error) {
-      if (error.response && error.response.data.errors) {
-        const errorMessage = error.response.data.errors[0].errorMessage;
+      if (error.response && error.response.data.message) {
+        const errorMessage = error.response.data.message;
         setError(errorMessage);
       } else {
-        console.error('Error submitting verification code:', error);
+        console.error('Onay kodunu onaylanamadı', error);
       }
     }
   };
@@ -133,17 +165,17 @@ const RegisterPage: React.FC = () => {
 
       if (response.status === 200) {
         console.log('Verification code resent!');
-        setResendCount((prevCount) => prevCount + 1);
+        setResendCount((resendCount) => resendCount + 1);
       } else {
-        const errorMessage = response.data.errors[0].errorMessage;
+        const errorMessage = response.data.message;
         setError(errorMessage);
       }
     } catch (error) {
-      if (error.response && error.response.data.errors) {
-        const errorMessage = error.response.data.errors[0].errorMessage;
+      if (error.response && error.response.data.message) {
+        const errorMessage = error.response.data.message;
         setError(errorMessage);
       } else {
-        console.error('Error resending verification code:', error);
+        console.error('Onay kodunu tekrar yollarken hata oluştu', error);
       }
     }
   };
@@ -184,8 +216,13 @@ const RegisterPage: React.FC = () => {
                   onClick={handleResendVerification}
                   disabled={resendDisabled}
                 >
-                  Resend Verification Code
+                  Tekrar Gönder
                 </button>
+                {verificationSuccess && (
+                    <p className={styles.successMessage}>
+                      Onay kodu doğrulandı, anasayfaya yönlendiriliyorsunuz
+                    </p>
+                  )}
               </form>
             ) : (
               <form onSubmit={handleFormSubmit}>

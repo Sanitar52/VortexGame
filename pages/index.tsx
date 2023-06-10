@@ -17,7 +17,7 @@ const Header = () => {
 
   const handleLogout = () => {
     // Perform logout actions here
-    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('accessToken');
     setUser(null);
   };
 
@@ -79,13 +79,13 @@ const Header = () => {
               <Link href="/">Ana Sayfa</Link>
             </li>
             <li>
-              <Link href="/about">GB Satın Al</Link>
+              <Link href="/gb-satin-al">GB Satın Al</Link>
             </li>
             <li>
-              <Link href="/logintest">Biz Kimiz</Link>
+              <Link href="/about">Biz Kimiz</Link>
             </li>
             <li>
-              <Link href="/logintest">İletişim</Link>
+              <Link href="/iletisim">İletişim</Link>
             </li>
           </ul>
         </nav>

@@ -267,6 +267,45 @@
   margin-left: 10px;
   cursor: pointer;
 }
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navLinks {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .navLinks ul {
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navLinks ul li {
+    margin: 0;
+    padding: 10px 0;
+  }
+
+  .userActions {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .userButton,
+  .loginButton,
+  .signupButton,
+  .balanceButton {
+    margin: 0 5px;
+    margin-top: 10px;
+  }
+
+  .userDropdown {
+    margin-top: 10px;
+  }
+}
 
 .dropdownContent .logoutButton:hover {
   background-color: #ff0000;
