@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../styles/styles.module.css';
 import stylesButton from '../../styles/buttons.module.css';
-import Layout from '../layout';
 import {useRouter} from 'next/router';
-import { type } from 'os';
+import { setTimeout } from 'timers';
 
 interface RegisterForm {
   email: string;
@@ -47,10 +46,10 @@ const RegisterPage: React.FC = () => {
     phone: '',
   });
   const [error, setError] = useState<string>('');
-  const [showVerification, setShowVerification] = useState<boolean>(false);
+  const [showVerification, setShowVerification] = useState<boolean>(true);
   const [verificationCode, setVerificationCode] = useState<string>('');
   const [resendCount, setResendCount] = useState<number>(0);
-  const [resendDisabled, setResendDisabled] = useState<boolean>(false);
+  const [resendDisabled, setResendDisabled] = useState<boolean>(true);
   const [verificationSuccess, setVerificationSuccess] = useState(false);
   const router = useRouter()
   useEffect(() => {
@@ -162,15 +161,16 @@ const RegisterPage: React.FC = () => {
       const resendData = {
         emailOrUsername: registerForm.email,
       };
-
+      setResendDisabled(true);
       const response = await axios.post(
         base_url + api,
         resendData
       );
-
+        setTimeout(() => {
+          setResendDisabled(false);
+        }, 10000);
       if (response.status === 200) {
         console.log('Verification code resent!');
-        setResendCount((resendCount) => resendCount + 1);
       } else {
         const errorMessage = response.data.message;
         setError(errorMessage);
@@ -215,7 +215,7 @@ const RegisterPage: React.FC = () => {
 
                 <button
                   type="button"
-                  className={`${stylesButton.button} ${stylesButton.resendButton}`}
+                  className="btn btn-warning"
                   onClick={handleResendVerification}
                   disabled={resendDisabled}
                 >

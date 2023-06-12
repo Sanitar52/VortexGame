@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import styles from '../../styles/styles.module.css';
 import { useGlobalContext } from '../../contexts';
-import { set } from 'date-fns';
+import Cookies from 'js-cookie';
 interface ErrorResponse400v1 {
   type: string;
   title: string;
@@ -26,7 +26,8 @@ interface ErrorResponse400v2{
 
 }
 const LoginPage: React.FC = () => {
-  const { user, setUser, setAccessToken } = useGlobalContext();
+  const { user, setUser, setAccessToken, setRefreshTokenCookie } = useGlobalContext();
+  
   const [loginForm, setLoginForm] = useState({
     emailOrUsername: '',
     password: '',
@@ -47,16 +48,30 @@ const LoginPage: React.FC = () => {
   const handleLogin = async () => {
     
     try {
+      const headers = {
+        'content-type': 'application/json',
+      };
+      const options = {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(loginForm),
+        Credentials: 'include',
+      };
+      
       const base_url = process.env.BACKEND_BASE_URL;
       const api = '/api/Auth/Login';
       console.log('BASE URL', base_url);
       const webUrl = base_url + api;
-      const response = await axios.post(
+      const response = await fetch(
         webUrl,
-        loginForm
+        options
       );
-      if (response.data.accessToken) {
-        const { message, accessToken } = response.data;
+      var data = await response.json();
+      if (data.accessToken) {
+        console.log(data)
+       // setRefreshTokenCookie(data.refreshToken, response);
+        Cookies.set('refreshToken', data.refreshToken, { expires: 7 });
+        const { message, accessToken } = data;
         setLoginForm({
           emailOrUsername: '',
           password: '',
@@ -64,6 +79,10 @@ const LoginPage: React.FC = () => {
         setError('');
         setLoginMessage('Login successful!');
         setAccessToken(accessToken);
+        var res = await axios.get(base_url + '/api/Auth/RefreshToken')
+        console.log('----------------')
+        console.log(res)
+        console.log('----------------')
         try {
           const headers = {
             'content-type': 'application/json',

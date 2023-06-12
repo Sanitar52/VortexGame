@@ -1,12 +1,18 @@
 import '../styles/global.css'
+import 'bootstrap/dist/css/bootstrap.css';
 import { AppProps } from 'next/app'
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { GlobalContextProvider } from '../contexts/globalContext';
 import Navbar from '../components/Navbar';
 
 function App({ Component, pageProps }) {
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    import ('bootstrap/dist/js/bootstrap');
+  }, []);
   return (
+
     <>
       <Head>
         <meta

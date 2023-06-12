@@ -13,7 +13,7 @@ const PaymentPage = () => {
   const {accessToken} = useGlobalContext();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setAmount(parseInt(value));
+    setAmount(+value);
   };
   const handleCardClick = () => {
     setShowCardOptions(!showCardOptions);

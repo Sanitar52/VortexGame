@@ -25,9 +25,7 @@
     cursor: pointer;
   }
   
-  .resendButton:hover {
-    background-color: #f8a700;
-  }
+
   .successMessage {
     color: green;
     font-weight: bold;

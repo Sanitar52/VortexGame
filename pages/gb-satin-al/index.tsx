@@ -17,74 +17,46 @@ interface itemInfo {
   description: string;
   quantity: number;
 }
-
-const ItemPage = () => {
-  const [amount, setAmount] = useState<number>(0);
-  const [userBalance, setUserBalance] = useState<number>(0);
-  const itemPrice = 10; // Replace with actual item price
-  const [items, setItems] = useState<itemInfo[]>([]);
- 
-  const FetchItems = async () => {
-    try {
-     
-      const requestBody = {
-        query: `
-          query {
-            items{
-              nodes{
-                id,
-                title,
-                price,
-                imageUrl,
-                description,
-                quantity
-              }
-            }
+export const getStaticProps = async () => {
+  const requestBody = {
+    query: `
+      query {
+        items{
+          nodes{
+            id,
+            title,
+            price,
+            imageUrl,
+            description,
+            quantity
           }
-        `,
-      };
-      const headers = {
-        'content-type': 'application/json'
-      };
-      const options = {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(requestBody),
-      };
-      
-      
-      console.log(process.env.GRAPHQL_BASE_URL)
-      const response = await fetch(process.env.GRAPHQL_BASE_URL, options);
-      const data = await response.json();
-      setItems(data?.data?.items?.nodes);
-      console.log('RESPONSE FROM FETCH REQUEST', data?.data?.items?.nodes);
-      
-    } catch (err) {
-      console.log('ERROR DURING FETCH REQUEST', err);
-    }
-  }
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(e.target.value));
+        }
+      }
+    `,
   };
-
-  const handleBuyClick = () => {
-    const totalPrice = amount * itemPrice;
-    if (totalPrice > userBalance) {
-      alert('Yeterince paranız yok');
-    } else {
-      // Perform the purchase action
-      alert('Satın alma işlemi tamamlandı');
-    }
+  const headers = {
+    'content-type': 'application/json'
   };
-
+  const options = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(requestBody),
+  };
   
+  
+  console.log(process.env.GRAPHQL_BASE_URL)
+  const response = await fetch(process.env.GRAPHQL_BASE_URL, options);
+  const data = await response.json();
+  console.log('RESPONSE FROM FETCH REQUEST', data?.data?.items?.nodes);
+  return {
+    props: {
+      data
+    },
+  };
+}
 
-  // Fetch the user's balance on component mount
-useEffect(() => {
-    FetchItems();
-  }
-, []);
-
+const ItemPage = ({data}) => {
+  console.log(data)
   return (
 
       <div style={{ textAlign: 'center' }}>
@@ -111,7 +83,7 @@ useEffect(() => {
             title="Title"
             description="Description"
           /> */}
-          {items.map((item) => (
+          {data?.data?.items?.nodes.map((item) => (
             <Card
               key = {item.id}
               id = {item.id}
